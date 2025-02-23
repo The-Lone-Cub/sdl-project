@@ -2,11 +2,12 @@
 
 #include <string>
 #include <vector>
-#include "game_state.h"
+#include "menu_state.h"
 
 class GameObject;
 
-class PauseState : public GameState {
+// Class representing the pause state of the game
+class PauseState : public MenuState {
     public:
         virtual void update();
         virtual void render();
@@ -15,11 +16,13 @@ class PauseState : public GameState {
         virtual bool onExit();
 
         virtual std::string getStateID() const { return s_pauseID; }
+        virtual void setCallbacks(const std::vector<Callback> &callbacks);
     private:
+        // Callback functions for pause menu items
         static void s_pauseToMain();
         static void s_resumePlay();
 
-        static const std::string s_pauseID;
+        static const std::string s_pauseID; // State ID
 
-        std::vector<GameObject *> m_gameObjects;
+        std::vector<GameObject *> m_gameObjects; // List of game objects in this state
 };

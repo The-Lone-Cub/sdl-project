@@ -3,6 +3,8 @@
 #include "include/player.h"
 #include "include/play_state.h"
 #include "include/pause_state.h"
+#include "include/menu_button.h"
+#include "include/state_parser.h"
 #include "include/game_object.h"
 #include "include/input_handler.h"
 #include "include/gameover_state.h"
@@ -16,8 +18,9 @@ void PlayState::update() {
     for (auto i : m_gameObjects)
         i->update();
     
-    if(checkCollision(dynamic_cast<SDLGameObject*>(m_gameObjects[0]), dynamic_cast<SDLGameObject*>(m_gameObjects[1])))
+    if(checkCollision(dynamic_cast<SDLGameObject*>(m_gameObjects[0]), dynamic_cast<SDLGameObject*>(m_gameObjects[1]))) {
         TheGame::Instance()->getStateMachine()->pushState(new GameOverState);
+    }
 }
 
 void PlayState::render() {
@@ -26,16 +29,10 @@ void PlayState::render() {
 }
 
 bool PlayState::onEnter() {
-    if(!TheTextureManager::Instance()->load("assets/helicopter.png", "helicopter", TheGame::Instance()->getRenderer()))
-        return false;
-    if(!TheTextureManager::Instance()->load("assets/helicopter2.png", "helicopter2", TheGame::Instance()->getRenderer()))
-        return false;
+    // Parse the state
+    StateParser stateParser;
+    stateParser.parseState("game_files/test.xml", s_playID, &m_gameObjects, &m_textureIDList);
 
-    GameObject *player = new Player(new LoaderParams(100, 200, 128, 55, "helicopter", 5));
-    GameObject *enemy = new Enemy(new LoaderParams(100, 100, 128, 55, "helicopter2", 5));
-    m_gameObjects.push_back(player);
-    m_gameObjects.push_back(enemy);
-    std::cout << "entering PlayState\n";
     return true;
 }
 
@@ -43,12 +40,14 @@ bool PlayState::onExit() {
     for(auto i : m_gameObjects)
         i->clean();
     m_gameObjects.clear();
-    TheTextureManager::Instance()->clearFromTextureMap("helicopter");
 
-    std::cout << "exiting PlayState\n";
+    for(auto i : m_textureIDList)
+        TheTextureManager::Instance()->clearFromTextureMap(i);
+
     return true;
 }
 
+// Check for collision between two game objects
 bool PlayState::checkCollision(SDLGameObject* p1, SDLGameObject* p2) {
     int leftA, leftB;
     int rightA, rightB;
@@ -77,4 +76,13 @@ bool PlayState::checkCollision(SDLGameObject* p1, SDLGameObject* p2) {
         return false;
 
     return true;
+}
+
+void PlayState::setCallbacks(const std::vector<Callback>& callbacks) {
+    for(auto i : m_gameObjects) {
+        if(dynamic_cast<MenuButton*>(i)) {
+            MenuButton *pButton = dynamic_cast<MenuButton *>(i);
+            pButton->setCallback(callbacks[pButton->getCallbackID()]);
+        }
+    }
 }

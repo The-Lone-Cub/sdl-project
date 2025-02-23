@@ -1,15 +1,15 @@
 #pragma once
 
-#include "game_state.h"
+#include "menu_state.h"
 #include <vector>
 
 class GameObject;
 
 // State for when the game ends.
-class GameOverState : public GameState {
+class GameOverState : public MenuState {
     public:
         // constructor / destructor
-        GameOverState() : GameState() {}
+        GameOverState() : MenuState() {}
         virtual ~GameOverState() {}
         
         /** Update and render functions ensure that
@@ -25,12 +25,14 @@ class GameOverState : public GameState {
         virtual bool onEnter();
         virtual bool onExit();
 
-        virtual std::string getStateID() const { return s_gameOverID; }
+        virtual void setCallbacks(const std::vector<Callback>& callbacks); // sets the callback functions for buttons
+
+        virtual std::string getStateID() const { return s_gameOverID; } // gets the state ID
     private:
 
         /** Callback functions for handling button behaviour */
-        static void s_gameOverToMain();
-        static void s_restartPlay();
+        static void s_gameOverToMain(); // callback for transitioning to main menu
+        static void s_restartPlay();    // callback for restarting the game
 
         static const std::string s_gameOverID;      // State's ID. Used to distinguish it from any other state
         std::vector<GameObject *> m_gameObjects;    // Container for handling GameObjects associated with this state

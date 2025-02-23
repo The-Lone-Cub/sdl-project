@@ -2,28 +2,31 @@
 #include "loader_params.h"
 #include "vector2D.h"
 
-// base class for all objects in game
+// Base class for all objects in game
 class GameObject {
     public:
         virtual void draw() = 0;
         virtual void update() = 0;
         virtual void clean() = 0;
-    
+
+        virtual void load(LoaderParams *pParams) = 0;
+
     protected:
-        GameObject(const LoaderParams* pParams) {}
+        GameObject() {}
         virtual ~GameObject() {}
 };
 
-// sub-class of GameObject. For specifically objects that need to SDL related functionality
+// Sub-class of GameObject. For specifically objects that need SDL related functionality
 class SDLGameObject : public GameObject {
 public:
     // constructor / destructor
-    SDLGameObject(const LoaderParams *pParams = nullptr);
+    SDLGameObject();
     virtual ~SDLGameObject() {}
 
     virtual void draw();    // renders object on screen
     virtual void update();  // updates object related details
     virtual void clean();   // clears object freeing necessary memory
+    virtual void load(LoaderParams *pParams); // loads object parameters
 
     // getters
     Vector2D& getPosition() { return m_position; }

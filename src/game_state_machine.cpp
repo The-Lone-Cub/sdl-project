@@ -1,11 +1,13 @@
-#include "include/game_state.h"
+#include "include/menu_state.h"
 #include "include/game_state_machine.h"
 
-void GameStateMachine::pushState(GameState* pState) {
+// Push a new state onto the stack and call its onEnter method
+void GameStateMachine::pushState(MenuState* pState) {
     m_gameStates.push_back(pState);
     m_gameStates.back()->onEnter();
 }
 
+// Pop the current state from the stack and call its onExit method
 void GameStateMachine::popState() {
     if(!m_gameStates.empty()) {
         if(m_gameStates.back()->onExit()) {
@@ -15,7 +17,8 @@ void GameStateMachine::popState() {
     }
 }
 
-void GameStateMachine::changeState(GameState* pState) {
+// Change the current state to a new state
+void GameStateMachine::changeState(MenuState* pState) {
     if(!m_gameStates.empty()) {
         if(m_gameStates.back()->getStateID() == pState->getStateID()) {
             return;
@@ -25,18 +28,19 @@ void GameStateMachine::changeState(GameState* pState) {
             m_gameStates.pop_back();
         }
     }
-    // push back our new state
+    // Push back our new state and initialise it
     m_gameStates.push_back(pState);
-    // initialise it
     m_gameStates.back()->onEnter();
 }
 
+// Update the current state
 void GameStateMachine::update() {
     if(!m_gameStates.empty()) {
         m_gameStates.back()->update();
     }
 }
 
+// Render the current state
 void GameStateMachine::render() {
     if(!m_gameStates.empty()) {
         m_gameStates.back()->render();

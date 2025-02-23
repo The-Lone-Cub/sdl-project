@@ -6,14 +6,14 @@ class GameStateMachine {
     public:
         /** Switches to passed state 
          *  Waits until passed state is done and
-         *  Swicthes back to previous state
+         *  Switches back to previous state
          */
-        void pushState(class GameState *state);
+        void pushState(class MenuState *state);
 
         /** Exits from previous state before
          *  entering into passed state
          */
-        void changeState(class GameState* state);
+        void changeState(class MenuState* state);
 
         /** Exits from current state */
         void popState();
@@ -22,5 +22,5 @@ class GameStateMachine {
         void render();  // renders state
 
     private:
-        std::vector<GameState*> m_gameStates;   // stores different states open at that moment
+        std::vector<MenuState*> m_gameStates;   // stores different states open at that moment
 };

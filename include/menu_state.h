@@ -3,21 +3,32 @@
 #include "game_state.h"
 #include <vector>
 
-// State that contains menu
+// Base class for menu states
 class MenuState : public GameState {
-    public:
-        virtual void update();
-        virtual void render();
+    protected:
+        typedef void (*Callback)();
+        virtual void setCallbacks(const std::vector<Callback> &callbacks) = 0;
+        std::vector<Callback> m_callbacks; // List of callback functions
+};
 
-        virtual bool onEnter();
-        virtual bool onExit();
+// Class representing the main menu state
+class MainMenuState : public MenuState
+{
+public:
+    virtual void update();
+    virtual void render();
 
-        virtual std::string getStateID() const { return s_menuID; }
-    private:
-        static const std::string s_menuID;
-        std::vector<class GameObject *> m_gameObjects;
+    virtual bool onEnter();
+    virtual bool onExit();
 
-        // call back functions for menu items
-        static void s_menuToPlay();
-        static void s_exitFromMenu();
+    virtual std::string getStateID() const { return s_menuID; }
+
+private:
+    virtual void setCallbacks(const std::vector<Callback> &callbacks);
+    static const std::string s_menuID; // State ID
+    std::vector<class GameObject *> m_gameObjects; // List of game objects in this state
+
+    // Callback functions for menu items
+    static void s_menuToPlay();
+    static void s_exitFromMenu();
 };

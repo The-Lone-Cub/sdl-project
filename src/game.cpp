@@ -2,7 +2,9 @@
 #include "include/player.h"
 #include "include/menu_state.h"
 #include "include/play_state.h"
+#include "include/menu_button.h"
 #include "include/input_handler.h"
+#include "include/animated_graphic.h"
 #include "include/texture_manager.h"
 
 Game* Game::s_pInstance = 0;
@@ -13,29 +15,33 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         flags = SDL_WINDOW_FULLSCREEN;
     }
     if(!SDL_Init(SDL_INIT_EVERYTHING)) {
-        // init the window
+        // Init the window
         m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if(m_pWindow) {     // window init success
+        if(m_pWindow) {     // Window init success
             m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
-            if(m_pRenderer) {       // renderer init success
+            if(m_pRenderer) {       // Renderer init success
                 SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
 
                 if(!TheTextureManager::Instance()->load("assets/animate.png", "animate", m_pRenderer)) {
                     return false;
                 }
-            } else {                  // renderer init fail
+            } else {                  // Renderer init fail
                 return false;
             }
-        } else {                      // window init fail
+        } else {                      // Window init fail
             return false;
         }
-    } else {                           // sdl init fail
+    } else {                           // SDL init fail
         return false;
     }
     
-    // init success
+    // Init success
     TheInputHandler::Instance()->InitialiseJoysticks();
-    m_pGameStateMachine->changeState(new MenuState());
+    TheGameObjectFactory::Instance()->registerType("MenuButton", new MenuButtonCreator());
+    TheGameObjectFactory::Instance()->registerType("Player", new PlayerCreator());
+    TheGameObjectFactory::Instance()->registerType("Enemy", new EnemyCreator());
+    TheGameObjectFactory::Instance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
+    m_pGameStateMachine->changeState(new MainMenuState());
     m_bRunning = true;
     return true;
 }
@@ -53,11 +59,11 @@ void Game::update() {
 }
 
 void Game::render() {
-    SDL_RenderClear(m_pRenderer);   // clear renderer to the draw color
+    SDL_RenderClear(m_pRenderer);   // Clear renderer to the draw color
 
     m_pGameStateMachine->render();
 
-    SDL_RenderPresent(m_pRenderer); // draw to the screen
+    SDL_RenderPresent(m_pRenderer); // Draw to the screen
 }
 
 void Game::clean() {

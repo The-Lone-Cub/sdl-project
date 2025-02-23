@@ -62,7 +62,6 @@ class InputHandler {
         void onJoystickButtonDown(SDL_Event &event);
         void onJoystickButtonUp(SDL_Event &event);
 
-
         // keyboard variables
         Uint8 *m_keystates; // stores state of all keys on keyboard
 
@@ -77,7 +76,7 @@ class InputHandler {
         bool m_bJoysticksInitialised;                   // stores whether or not at least one joystick has been initialised
         const int m_joystickDeadZone = 10000;   // Dead zone of joystick
 
-        static InputHandler *s_pInstance;
+        static InputHandler *s_pInstance; // singleton instance
 };
 
 using TheInputHandler = InputHandler;   // You can use either TheInputHandler or InputHandler

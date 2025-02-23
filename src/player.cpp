@@ -2,12 +2,20 @@
 #include <SDL2/SDL_timer.h>
 #include "include/input_handler.h"
 
-Player::Player(const LoaderParams *pParams) : SDLGameObject(pParams) {}
+// Player class constructor
+Player::Player() : SDLGameObject() {}
 
+// Load player parameters
+void Player::load(LoaderParams* pParams) {
+    SDLGameObject::load(pParams);
+}
+
+// Draw player
 void Player::draw() {
     SDLGameObject::draw();
 }
 
+// Update player state
 void Player::update() {
     m_velocity.setX(0);
     m_velocity.setY(0);
@@ -18,24 +26,31 @@ void Player::update() {
     SDLGameObject::update();
 }
 
+// Clean player resources
 void Player::clean() {}
 
+// Handle player input
 void Player::handleInput() {
     Vector2D *target = TheInputHandler::Instance()->getMousePosition();
     m_velocity = *target - m_position;
     m_velocity /= 50;
 }
 
-Enemy::Enemy(const LoaderParams* pParams):
-SDLGameObject(pParams) {
+// Enemy class constructor
+Enemy::Enemy() : SDLGameObject() {}
+
+// Load enemy parameters
+void Enemy::load(LoaderParams* pParams) {
+    SDLGameObject::load(pParams);
     m_velocity.setY(2);
-    m_velocity.setX(0.001);
 }
 
+// Draw enemy
 void Enemy::draw() {
     SDLGameObject::draw();
 }
 
+// Update enemy state
 void Enemy::update() {
     m_currentFrame = int(((SDL_GetTicks() / 100) % m_numFrames));
 
@@ -47,4 +62,5 @@ void Enemy::update() {
     SDLGameObject::update();
 }
 
+// Clean enemy resources
 void Enemy::clean() {}

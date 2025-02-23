@@ -11,12 +11,12 @@ bool TextureManager::load(std::string filename, std::string id, SDL_Renderer* pR
     SDL_Texture* pTexture = SDL_CreateTextureFromSurface(pRenderer, pTempSurface);
     SDL_FreeSurface(pTempSurface);
 
-    // everything was ok, add texture to list
+    // Everything was ok, add texture to list
     if(pTexture) {
         m_textureMap[id] = pTexture;
         return true;
     }
-    return false;   // reaching here means something went wrong
+    return false;   // Reaching here means something went wrong
 }
 
 void TextureManager::draw(std::string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {

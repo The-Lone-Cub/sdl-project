@@ -148,7 +148,7 @@ void InputHandler::onMouseButtonUp(SDL_Event &event) {
 void InputHandler::onJoystickAxisMove(SDL_Event &event) {
     int whichOne = event.jaxis.which;
 
-    // left stick move left or right
+    // Left stick move left or right
     if (event.jaxis.axis == 0)
     {
         if (event.jaxis.value > m_joystickDeadZone)
@@ -159,7 +159,7 @@ void InputHandler::onJoystickAxisMove(SDL_Event &event) {
             m_joystickValues[whichOne].first->setX(0);
     }
 
-    // left stick move up or down
+    // Left stick move up or down
     if (event.jaxis.axis == 1)
     {
         if (event.jaxis.value > m_joystickDeadZone)
@@ -170,7 +170,7 @@ void InputHandler::onJoystickAxisMove(SDL_Event &event) {
             m_joystickValues[whichOne].first->setY(0);
     }
 
-    // right stick move left or right
+    // Right stick move left or right
     if (event.jaxis.axis == 3)
     {
         if (event.jaxis.value > m_joystickDeadZone)
@@ -181,7 +181,7 @@ void InputHandler::onJoystickAxisMove(SDL_Event &event) {
             m_joystickValues[whichOne].second->setX(0);
     }
 
-    // right stick move up or down
+    // Right stick move up or down
     if (event.jaxis.axis == 2)
     {
         if (event.jaxis.value > m_joystickDeadZone)

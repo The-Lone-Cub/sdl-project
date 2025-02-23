@@ -1,14 +1,18 @@
 #include "include/menu_button.h"
 #include "include/input_handler.h"
 
-MenuButton::MenuButton(const LoaderParams* pParams, void(*callback)()):
-SDLGameObject(pParams),
-m_callback(callback) {
-    m_currentFrame = MOUSE_OUT; // start at frame 0;
+MenuButton::MenuButton() : SDLGameObject() {
+    m_currentFrame = MOUSE_OUT; // Start at frame 0
+}
+
+void MenuButton::load(LoaderParams* pParams) {
+    SDLGameObject::load(pParams);
+    m_callbackID = pParams->getCallbackID();
+    m_currentFrame = MOUSE_OUT;
 }
 
 void MenuButton::draw() {
-    SDLGameObject::draw(); // use base class drawing
+    SDLGameObject::draw(); // Use base class drawing
 }
 
 void MenuButton::update() {
@@ -20,7 +24,7 @@ void MenuButton::update() {
     && pMousePos->getY() > m_position.getY()) {
         if(TheInputHandler::Instance()->getMouseButtonState(LEFT) && m_bReleased) {
             m_currentFrame = MOUSE_CLICKED;
-            m_callback();   // call our callback function
+            m_callback();   // Call our callback function
             m_bReleased = false;
         } else if(!TheInputHandler::Instance()->getMouseButtonState(LEFT)) {
             m_bReleased = true;
