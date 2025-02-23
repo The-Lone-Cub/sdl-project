@@ -2,6 +2,7 @@
 #include "loader_params.h"
 #include "vector2D.h"
 
+// base class for all objects in game
 class GameObject {
     public:
         virtual void draw() = 0;
@@ -13,21 +14,34 @@ class GameObject {
         virtual ~GameObject() {}
 };
 
+// sub-class of GameObject. For specifically objects that need to SDL related functionality
 class SDLGameObject : public GameObject {
 public:
+    // constructor / destructor
     SDLGameObject(const LoaderParams *pParams = nullptr);
     virtual ~SDLGameObject() {}
-    virtual void draw();
-    virtual void update();
-    virtual void clean();
+
+    virtual void draw();    // renders object on screen
+    virtual void update();  // updates object related details
+    virtual void clean();   // clears object freeing necessary memory
+
+    // getters
+    Vector2D& getPosition() { return m_position; }
+    int getWidth() { return m_width; }
+    int getHeight() { return m_height; }
 
 protected:
-    Vector2D m_position;
-    Vector2D m_velocity;
-    Vector2D m_acceleration;
-    int m_width;
-    int m_height;
-    int m_currentRow;
-    int m_currentFrame;
+    Vector2D m_position;        // stores position of object
+    Vector2D m_velocity;        // stores velocity of object
+    Vector2D m_acceleration;    // stores acceleration of object
+    int m_width;                // stores width of object
+    int m_height;               // stores height of object
+    int m_currentRow;           // stores current row of image object is using
+    int m_currentFrame;         // stores current frame at which object is
+    int m_numFrames;            // stores total number of frames object has
+    
+    /*  Stores ID of texture object is using
+     ** Useful for accessing texture through TheTextureManager
+    */
     std::string m_textureID;
 };

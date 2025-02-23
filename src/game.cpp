@@ -1,7 +1,9 @@
 #include "include/game.h"
-#include "include/texture_manager.h"
 #include "include/player.h"
+#include "include/menu_state.h"
+#include "include/play_state.h"
 #include "include/input_handler.h"
+#include "include/texture_manager.h"
 
 Game* Game::s_pInstance = 0;
 
@@ -21,9 +23,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
                 if(!TheTextureManager::Instance()->load("assets/animate.png", "animate", m_pRenderer)) {
                     return false;
                 }
-
-                m_GameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
-                m_GameObjects.push_back(new Enemy(new LoaderParams(300, 300, 128, 82, "animate")));
             } else {                  // renderer init fail
                 return false;
             }
@@ -36,31 +35,33 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     
     // init success
     TheInputHandler::Instance()->InitialiseJoysticks();
+    m_pGameStateMachine->changeState(new MenuState());
     m_bRunning = true;
     return true;
 }
 
 void Game::handleEvents() {
     TheInputHandler::Instance()->update();
+
+    if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RETURN)) {
+        m_pGameStateMachine->changeState(new PlayState());
+    }
 }
 
 void Game::update() {
-    for(SDLGameObject* i : m_GameObjects) {
-        i->update();
-    }
+    m_pGameStateMachine->update();
 }
 
 void Game::render() {
     SDL_RenderClear(m_pRenderer);   // clear renderer to the draw color
 
-    for(SDLGameObject* i : m_GameObjects) {
-        i->draw();
-    }
+    m_pGameStateMachine->render();
 
     SDL_RenderPresent(m_pRenderer); // draw to the screen
 }
 
 void Game::clean() {
+    m_bRunning = false;
     SDL_DestroyRenderer(m_pRenderer);
     SDL_DestroyWindow(m_pWindow);
     SDL_Quit();

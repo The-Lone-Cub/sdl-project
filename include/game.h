@@ -1,8 +1,13 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include "game_state_machine.h"
 #include <vector>
-#include "game_object.h"
+#include <SDL2/SDL.h>
 
+/** Follows singleton pattern meaning there can only be
+ *  one instance of the class.
+ *  
+ *  It is the the game itself.
+ */
 class Game {
     public:
         static Game* Instance() {
@@ -13,29 +18,37 @@ class Game {
             return s_pInstance;
         }
 
-        // simply set the running variable to true
+        /** Initialises game with specified title, position and size.
+         *  Note that if fullscreen is set to true, xpos, ypos, width
+         *  and height parameters don't matter.
+         */
         bool init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
-        void render();
-        void update();
-        void handleEvents();
-        void clean();
-        SDL_Renderer* getRenderer() { return m_pRenderer; }
 
-        // a function to access the private running variable
-        bool running() { return m_bRunning; }
+        void handleEvents();    // checks for any inputs
+        void update();          // updates game
+        void render();          // renders game on screen
+        void clean();           // clears game resources freeing up any memory
+        
+        // getters
+        SDL_Renderer* getRenderer() { return m_pRenderer; }
+        GameStateMachine *getStateMachine() { return m_pGameStateMachine; }
+
+        bool running() { return m_bRunning; }   // check whether game is still running
     private:
-        Game() : m_pWindow(nullptr), m_pRenderer(nullptr) {}
+        // constructor / destructor
+        Game() : m_pWindow(nullptr), m_pRenderer(nullptr), m_pGameStateMachine(new GameStateMachine()) {}
         ~Game() {}
 
-        SDL_Window* m_pWindow;
-        SDL_Renderer* m_pRenderer;
+        // game window and renderer
+        SDL_Window *m_pWindow;
+        SDL_Renderer *m_pRenderer;
 
-        std::vector<SDLGameObject*> m_GameObjects;
+        // FSM for managing states. Goto game_state_machine for more info.
+        GameStateMachine *m_pGameStateMachine;
 
-        int m_currentFrame;
-        bool m_bRunning;
+        bool m_bRunning;    // stores whether game is still running or not
 
-        static Game* s_pInstance;
+        static Game *s_pInstance;   // Game instance. There can only be one.
 };
 
-using TheGame = Game;
+using TheGame = Game;   // You can either use TheGame or Game.

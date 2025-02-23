@@ -1,5 +1,5 @@
-#include "include/texture_manager.h"
 #include <SDL2/SDL_image.h>
+#include "include/texture_manager.h"
 
 TextureManager* TextureManager::s_pInstance = 0;
 

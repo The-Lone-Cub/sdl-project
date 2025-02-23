@@ -1,5 +1,5 @@
-#include "include/input_handler.h"
 #include "include/game.h"
+#include "include/input_handler.h"
 
 InputHandler* InputHandler::s_pInstance = 0;
 
