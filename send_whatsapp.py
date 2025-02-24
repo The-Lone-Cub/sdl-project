@@ -7,5 +7,5 @@ phone_number = '+256700259998' # Change to your parent's phone number
 message = "Hi, I've updated my Github account, please check it out on github.com/The-Lone-Cub/sdl-project. Thanks"
 
 # Send the message at a pecific time (24-hour format, adjust as needed)
-# Format: (phone_number, message)
-kit.sendwhatmsg_instantly(phone_number, message)
+# Format: (phone_number, message, hour, minute)
+kit.sendwhatmsg(phone_number, message, 11+12, 45)
