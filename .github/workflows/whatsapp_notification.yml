@@ -1,0 +1,27 @@
+name: Send WhatsApp Notification
+
+on:
+  push:
+    branches:
+      - main  # Trigger the action when you push to the 'main' branch (or adjust if using a different branch)
+
+jobs:
+  send-whatsapp-message:
+    runs-on: ubuntu-latest  # GitHub runner OS
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # Check out the repository code
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Set the version of Python
+
+      - name: Install dependencies
+        run: |
+          pip install pywhatkit  # Install pywhatkit for WhatsApp
+
+      - name: Run WhatsApp Script
+        run: |
+          python send_whatsapp.py  # Run your Python script to send the WhatsApp message
