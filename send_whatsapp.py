@@ -7,5 +7,5 @@ phone_number = PHONE_NUMBER # Change to your parent's phone number
 message = MESSAGE
 
 # Send the message at a pecific time (24-hour format, adjust as needed)
-# Format: (phone_number, message, hour, minute)
-kit.sendwhatmsg(phone_number, message, 10+12, 37) # Sends at 3:00 PM, change time as needed
+# Format: (phone_number, message)
+kit.sendwhatmsg_instantly(phone_number, message)
