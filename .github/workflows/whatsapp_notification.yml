@@ -16,12 +16,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'  # Set the version of Python
+          python-version: '3.12.8'  # Set the version of Python
 
       - name: Install dependencies
         run: |
           pip install pywhatkit  # Install pywhatkit for WhatsApp
 
       - name: Run WhatsApp Script
+        env:
+          PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
+          MESSAGE: ${{ secrets.MESSAGE }}
         run: |
           python send_whatsapp.py  # Run your Python script to send the WhatsApp message
