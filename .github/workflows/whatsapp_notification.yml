@@ -24,7 +24,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb
           sudo apt-get install -y google-chrome-stable
-          sudo apt-get install -y libnss3 libgconf-2-4
+          sudo apt-get install -y libnss3
 
       - name: Run WhatsApp Script
         env:
