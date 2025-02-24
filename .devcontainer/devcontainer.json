@@ -1,0 +1,10 @@
+{
+    "name": "C++ Development",
+    "image": "mcr.microsoft.com/vscode/devcontainers/cpp:latest",
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev",
+    "extensions": [
+      "ms-vscode.cpptools",
+      "ms-vscode.cmake-tools"
+    ]
+  }
+  
