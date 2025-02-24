@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pywhatkit python  # Install pywhatkit for WhatsApp
+          pip install pywhatkit  # Install pywhatkit for WhatsApp
           sudo apt-get update
           sudo apt-get install -y xvfb
           sudo apt-get install -y google-chrome-stable
